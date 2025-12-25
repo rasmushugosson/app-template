@@ -1,0 +1,9 @@
+[submodule "dep/log-lib"]
+	path = dep/log-lib
+	url = git@github.com:rasmushugosson/log-lib.git
+[submodule "dep/ecs-lib"]
+	path = dep/ecs-lib
+	url = git@github.com:rasmushugosson/ecs-lib.git
+[submodule "dep/app-lib"]
+	path = dep/app-lib
+	url = git@github.com:rasmushugosson/app-lib.git
