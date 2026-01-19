@@ -8,8 +8,9 @@ To start a new project, clone this repository and replace the sandbox code with 
 
 This project depends on the following libraries, included as git submodules:
 - [log-lib](https://github.com/rasmushugosson/log-lib) - Logging, exceptions and timing utilities
+- [event-lib](https://github.com/rasmushugosson/event-lib) - Event system and layer stack
 - [ecs-lib](https://github.com/rasmushugosson/ecs-lib) - Entity Component System
-- [app-lib](https://github.com/rasmushugosson/app-lib) - Graphics application wrapper (GLFW, GLEW, ImGui, OpenGL, Vulkan, etc.)
+- [app-lib](https://github.com/rasmushugosson/app-lib) - Graphics application wrapper (GLFW, GLAD, ImGui, OpenGL, Vulkan, etc.)
 
 ## Getting Started
 
@@ -73,10 +74,10 @@ If you use `clangd` for intellisense and code completion, the provided `gen-buil
 - **Linux Dependencies:** On Linux, install the required system packages:
   ```bash
   # Debian/Ubuntu
-  sudo apt install libglfw3-dev libglew-dev libopenal-dev
+  sudo apt install libglfw3-dev libopenal-dev
 
   # Arch Linux
-  sudo pacman -S glfw glew openal
+  sudo pacman -S glfw openal
   ```
 
   For Vulkan support on Linux, install the Vulkan headers and validation layers:
@@ -99,6 +100,7 @@ app-template/
 ├── dep/               # Library dependencies (git submodules)
 │   ├── app-lib/       # Graphics application wrapper
 │   ├── ecs-lib/       # Entity Component System
+│   ├── event-lib/     # Event system and layer stack
 │   └── log-lib/       # Logging utilities
 ├── res/               # Resources (icons, cursors, fonts)
 ├── premake5.lua       # Build configuration
