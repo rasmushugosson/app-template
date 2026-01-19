@@ -7,3 +7,6 @@
 [submodule "dep/app-lib"]
 	path = dep/app-lib
 	url = git@github.com:rasmushugosson/app-lib.git
+[submodule "dep/event-lib"]
+	path = dep/event-lib
+	url = git@github.com:rasmushugosson/event-lib.git
