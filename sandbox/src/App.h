@@ -1,11 +1,10 @@
 #pragma once
 
 #include "Camera.h"
+#include "OpenGL.h"
 #include "OpenGLMaths.h"
 #include "Shader.h"
 #include "Window.h"
-
-#include <GL/glew.h>
 
 class App
 {

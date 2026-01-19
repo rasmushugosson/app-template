@@ -60,10 +60,11 @@ end
 -- Directory paths
 local dep_dir = "dep"
 local log_lib_dir = dep_dir .. "/log-lib"
+local event_lib_dir = dep_dir .. "/event-lib"
 local ecs_lib_dir = dep_dir .. "/ecs-lib"
 local app_lib_dir = dep_dir .. "/app-lib"
 local vendor_dir = app_lib_dir .. "/vendor"
-local glew_dir = app_lib_dir .. "/dep/GLEW"
+local glad_dir = vendor_dir .. "/glad"
 local glfw_dir = app_lib_dir .. "/dep/GLFW"
 local openal_dir = app_lib_dir .. "/dep/OpenALSoft"
 
@@ -72,8 +73,6 @@ location(workspace_location())
 architecture("x64")
 configurations({ "Debug", "Release", "Dist" })
 warnings("Extra")
-
-defines({ "GLEW_STATIC" })
 
 filter("system:windows")
 defines({ "AE_WINDOWS" })
@@ -178,6 +177,31 @@ links({ "Log" })
 pchheader(path.getabsolute(ecs_lib_dir .. "/ecs-lib/src/general/pch.h"))
 pchsource(ecs_lib_dir .. "/ecs-lib/src/general/pch.cpp")
 
+-- Event library
+project("Event")
+kind("StaticLib")
+language("C++")
+cppdialect("C++23")
+objdir("obj/%{prj.name}/%{cfg.buildcfg}")
+targetdir("bin/%{prj.name}/%{cfg.buildcfg}")
+
+files({
+	event_lib_dir .. "/event-lib/src/**.cpp",
+	event_lib_dir .. "/event-lib/src/**.h",
+	event_lib_dir .. "/event-lib/include/**.h",
+})
+
+includedirs({
+	log_lib_dir .. "/log-lib/include",
+	event_lib_dir .. "/event-lib/include",
+	event_lib_dir .. "/event-lib/src",
+})
+
+links({ "Log" })
+
+pchheader(path.getabsolute(event_lib_dir .. "/event-lib/src/general/pch.h"))
+pchsource(event_lib_dir .. "/event-lib/src/general/pch.cpp")
+
 -- STB library (from app-lib vendor)
 project("STB")
 kind("StaticLib")
@@ -206,6 +230,22 @@ files({
 
 includedirs({
 	vendor_dir .. "/glm",
+})
+
+-- GLAD library
+project("GLAD")
+kind("StaticLib")
+language("C")
+objdir("obj/%{prj.name}/%{cfg.buildcfg}")
+targetdir("bin/%{prj.name}/%{cfg.buildcfg}")
+
+files({
+	glad_dir .. "/src/glad.c",
+	glad_dir .. "/include/**.h",
+})
+
+includedirs({
+	glad_dir .. "/include",
 })
 
 -- ImGui library
@@ -253,8 +293,6 @@ cppdialect("C++23")
 objdir("obj/%{prj.name}/%{cfg.buildcfg}")
 targetdir("bin/%{prj.name}/%{cfg.buildcfg}")
 
-defines({ "GLEW_STATIC" })
-
 files({
 	app_lib_dir .. "/app-lib/src/**.cpp",
 	app_lib_dir .. "/app-lib/src/**.h",
@@ -262,9 +300,10 @@ files({
 })
 
 includedirs({
-	glew_dir .. "/include",
+	glad_dir .. "/include",
 	openal_dir .. "/include",
 	log_lib_dir .. "/log-lib/include",
+	event_lib_dir .. "/event-lib/include",
 	app_lib_dir .. "/app-lib/include",
 	app_lib_dir .. "/app-lib/src",
 	vendor_dir .. "/glm",
@@ -282,10 +321,11 @@ filter("system:windows")
 links({
 	glfw_dir .. "/lib/glfw3.lib",
 	"opengl32.lib",
-	glew_dir .. "/lib/glew32s.lib",
 	"Log",
+	"Event",
 	"STB",
 	"ImGui",
+	"GLAD",
 })
 
 filter({ "system:windows", "configurations:Debug" })
@@ -298,22 +338,24 @@ filter("system:linux")
 links({
 	"glfw",
 	"GL",
-	"GLEW",
 	"openal",
 	"Log",
+	"Event",
 	"STB",
 	"ImGui",
+	"GLAD",
 })
 
 filter("system:macosx")
 links({
 	"glfw",
 	"OpenGL.framework",
-	"GLEW",
 	"openal",
 	"Log",
+	"Event",
 	"STB",
 	"ImGui",
+	"GLAD",
 })
 
 filter({})
@@ -344,14 +386,13 @@ cppdialect("C++23")
 objdir("obj/%{prj.name}/%{cfg.buildcfg}")
 targetdir("bin/%{prj.name}/%{cfg.buildcfg}")
 
-defines({ "GLEW_STATIC" })
-
 files({ "sandbox/src/**.cpp", "sandbox/src/**.h" })
 
 includedirs({
-	glew_dir .. "/include",
+	glad_dir .. "/include",
 	openal_dir .. "/include",
 	log_lib_dir .. "/log-lib/include",
+	event_lib_dir .. "/event-lib/include",
 	ecs_lib_dir .. "/ecs-lib/include",
 	app_lib_dir .. "/app-lib/include",
 	"sandbox/src",
@@ -369,11 +410,12 @@ filter("system:windows")
 links({
 	glfw_dir .. "/lib/glfw3.lib",
 	"opengl32.lib",
-	glew_dir .. "/lib/glew32s.lib",
 	"Log",
+	"Event",
 	"ECS",
 	"STB",
 	"ImGui",
+	"GLAD",
 	"App",
 })
 
@@ -394,11 +436,12 @@ links({
 	"App",
 	"ImGui",
 	"STB",
+	"GLAD",
+	"Event",
 	"ECS",
 	"Log",
 	"glfw",
 	"GL",
-	"GLEW",
 	"openal",
 })
 
@@ -407,11 +450,12 @@ links({
 	"App",
 	"ImGui",
 	"STB",
+	"GLAD",
+	"Event",
 	"ECS",
 	"Log",
 	"glfw",
 	"OpenGL.framework",
-	"GLEW",
 	"openal",
 })
 
