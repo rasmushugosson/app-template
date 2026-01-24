@@ -232,6 +232,19 @@ includedirs({
 	vendor_dir .. "/glm",
 })
 
+-- Nlohmann (header-only utility project)
+project("Nlohmann")
+kind("Utility")
+language("C++")
+
+files({
+	vendor_dir .. "/nlohmann/**.hpp",
+})
+
+includedirs({
+	vendor_dir .. "/nlohmann",
+})
+
 -- GLAD library
 project("GLAD")
 kind("StaticLib")
@@ -309,13 +322,14 @@ includedirs({
 	vendor_dir .. "/glm",
 	vendor_dir .. "/stb",
 	vendor_dir .. "/imgui",
+	vendor_dir .. "/nlohmann",
 })
 
 filter("system:windows")
 includedirs({ glfw_dir .. "/include" })
 filter({})
 
-dependson({ "GLM" })
+dependson({ "GLM", "Nlohmann" })
 
 filter("system:windows")
 links({
@@ -398,13 +412,14 @@ includedirs({
 	"sandbox/src",
 	vendor_dir .. "/glm",
 	vendor_dir .. "/imgui",
+	vendor_dir .. "/nlohmann",
 })
 
 filter("system:windows")
 includedirs({ glfw_dir .. "/include" })
 filter({})
 
-dependson({ "GLM" })
+dependson({ "GLM", "Nlohmann" })
 
 filter("system:windows")
 links({
